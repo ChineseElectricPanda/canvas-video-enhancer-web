@@ -1,0 +1,9 @@
+{
+  "name":"canvas-video-enhancer-web",
+  "dependencies":{
+    "express":"*",
+    "body-parser":"*",
+    "cors":"*",
+    "mysql":"*"
+  }
+}
