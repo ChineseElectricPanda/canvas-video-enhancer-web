@@ -67,7 +67,7 @@ function parseUrl(url) {
     info.course = url[2];
     info.infix = url[3];
 
-    info.suffix = url[4].split('.')[1];
+    info.suffix = url[4].match(/\..+$/)[0].substring(1);
     var dateTimeString = url[4].match(/\d+/)[0];
     url[4] = url[4].replace(dateTimeString, '').replace('.' + info.suffix, '');
     info.prefix = url[4];
@@ -106,5 +106,5 @@ function runQuery(query, values, callback, errorCallback) {
     });
 }
 
-console.log(parseUrl('2016/1163/SOFTENG364L01C/351618/201605101500.LT347936.preview'));
+console.log(parseUrl('2016/1163/SOFTENG364L01C/351618/A201605101500.LT347936.REV1.preview'));
 app.listen(process.env.port || 3000);
