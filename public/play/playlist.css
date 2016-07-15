@@ -1,0 +1,168 @@
+body {
+    font-family: sans-serif;
+    background-color: #F1F1F1;
+}
+
+#nav-bar {
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    vertical-align: middle;
+    background-color: white;
+    border-collapse:collapse;
+    border-bottom: 1px solid #E8E8E8;
+    z-index:100
+}
+
+#nav-bar td:last-child{
+    width:99%;
+}
+
+#logo {
+    height: 60px;
+    width:60px;
+    cursor:pointer;
+}
+
+#logo-title {
+    font-size: 20px;
+    cursor:pointer;
+}
+
+
+#outer-container {
+    margin: auto;
+    border-collapse: collapse;
+    background-color:black;
+    margin-top:58px;
+}
+
+
+#playlist-container {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: 405px;
+    background-color: black;
+}
+
+#playlist-heading {
+    background-color: #1a1a1a;
+}
+
+#playlist-heading,
+#playlist-heading table {
+    width: 100%;
+}
+
+#playlist-heading td {
+    color: white;
+    padding:10px;
+}
+
+#playlist-progress {
+    vertical-align: middle;
+    text-align: right;
+}
+
+#course-name{
+    font-size:16px;
+}
+
+#semester{
+    margin-top:5px;
+    color:#b8b8b8;
+    font-size:12px;
+
+}
+
+#playlist-list {
+    flex-grow: 1;
+    background-color: #222;
+    overflow:auto;
+}
+
+::-webkit-scrollbar{
+    width:12px;
+}
+
+::-webkit-scrollbar-track {
+    background:#3a3a3a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+.playlist-item {
+    color: white;
+    padding:5px 10px;
+}
+
+.playlist-item.selected,
+.playlist-item.selected:hover{
+    background-color:#444;
+}
+
+.playlist-item:hover{
+    background-color:#333;
+    cursor:pointer;
+}
+
+#search-container{
+    position:fixed;
+    width:100%;
+    top:20px;
+    left:0;
+    z-index:200;
+    pointer-events: none;
+}
+
+#search{
+    width:600px;
+    margin:auto;
+    pointer-events: all;
+}
+
+#search-bar {
+    width:100%;
+    font-size:20px;
+    border-radius:2px;
+    text-align:center;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #A9A9A9;
+}
+#search-results{
+    width:100%;
+    margin:auto;
+    background-color:white;
+    border-width:0 1px 1px 1px;
+    border-color:#e8e8e8;
+    border-collapse:collapse;
+    opacity:0;
+}
+.searching #search-results{
+    opacity:1;
+}
+
+#search-results td{
+    border-width:0;
+    font-size:0;
+    padding:0 30px;
+    border-style:inset;
+    color:#444;
+}
+
+.searching #search-results td{
+    font-size:15px;
+    padding:10px 30px;
+}
+
+#search-results td:first-child{
+    text-align:left;
+}
+#search-results td{
+    text-align:right;
+}

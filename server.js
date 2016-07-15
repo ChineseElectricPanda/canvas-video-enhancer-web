@@ -51,9 +51,108 @@ app.post('/video', function (req, res) {
                 res.status(500).send(err);
             }
         });
+});
 
+app.post('/api/v1/video', function (req, res) {
+    console.log(req.body);
+    var url = req.body.url;
+    if (!url) {
+        res.status(400).send('url not specified in POST body');
+        return;
+    }
+    var i;
+    try {
+        i = parseUrl(url);
+    } catch (e) {
+        res.status(500).send('failed to parse url');
+        return;
+    }
+
+    runQuery('INSERT INTO video (year,month,day,hour,minute,semester_code,infix,prefix,suffix,course,course_year)VALUES' +
+        '(?,?,?,?,?,?,?,?,?,?,?)', [i.year, i.month, i.day, i.hour, i.minute, i.semester_code, i.infix, i.prefix, i.suffix, i.course, i.course_year],
+        function () {
+            res.status(201).send('Record created');
+        }, function (err) {
+            if (err.code == 'ER_DUP_ENTRY') {
+                res.status(200).send('Record already exists');
+            } else {
+                res.status(500).send(err);
+            }
+        });
+});
+
+/*
+ GET /courses
+ Get a list of courses in the database
+ */
+app.get('/api/v1/courses', function (req, res) {
+    runQuery('SELECT DISTINCT course,course_year,semester_code,count(*) as number_of_videos ' +
+        'FROM video ' +
+        'GROUP BY course, course_year, semester_code ' +
+        'ORDER BY course ASC, semester_code DESC', [],
+        function (rows) {
+            res.setHeader('Content-Type', 'application/json');
+            res.status(200).send(rows);
+        }, function (err) {
+            res.status(500).send(err);
+        });
 
 });
+
+app.get('/api/v1/playlist', function (req, res) {
+    if(!req.query.course || !req.query.semester_code){
+        res.status(400).send('course or semester_code not specified in parameters');
+        return;
+    }
+    runQuery('SELECT * FROM video WHERE course=? AND semester_code=? ORDER BY year ASC, month ASC, day ASC, hour ASC, minute ASC',
+        [req.query.course, req.query.semester_code],
+        function (rows) {
+            //404 if no videos returned
+            if(rows.length==0){
+                res.status(404).send('No videos found');
+                return;
+            }
+            res.setHeader('Content-Type', 'application/json');
+            res.status(200).send(rows);
+        }, function (err) {
+            res.status(500).send(err);
+        });
+});
+
+app.get('/watch',function(req,res){
+    if(!req.query.video_id){
+        req.status(400).send('Must specify video_id')
+    }
+    runQuery('SELECT course,semester_code FROM video WHERE video_id=?',
+        [req.query.video_id],
+        function(rows){
+            //404 if video_id not found
+            if(rows.length==0){
+                res.status(404).send('Video not found');
+            }
+            //set redirect url
+            var redirect='http://'+req.headers['host']+'/play?course='+rows[0].course+'&semester_code='+rows[0].semester_code+'&video_id='+req.query.video_id;
+            //add timestamp if present
+            if(typeof req.query.h=='number'){
+                redirect+='&h='+req.query.h;
+            }
+            if(typeof req.query.m=='number'){
+                redirect+='&m='+req.query.m;
+            }
+            if(typeof req.query.s=='number'){
+                redirect+='&s='+req.query.s;
+            }
+            res.statusCode=303;
+            res.setHeader('Location',redirect);
+            res.send();
+        },
+        function(err){
+            res.status(500).send(err);
+        })
+});
+
+/* Static file routes TODO: Consider moving to another server */
+app.use('/', express.static(__dirname + '/public'));
 
 function parseUrl(url) {
     //url is in format <course_year>/<semester_code>/<infix>/<prefix><year><month><day><hour><minute>.<suffix>.preview
@@ -84,6 +183,7 @@ function parseUrl(url) {
 /**
  * Runs a query
  * @param {string} query the query to run
+ * @param values[] query parameter values
  * @param {function(rows)} callback the callback to send the result to
  * @param {function(err)} errorCallback called if there is an error running the query
  */
