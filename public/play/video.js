@@ -462,8 +462,8 @@ currentHovers.push('paused');
 
 //Video Hotkeys
 document.addEventListener('keydown', function (e) {
-    for(var i=0;i<querySelectorAll('input').length;i++){
-        if(querySelectorAll('input')[i].hasFocus()){
+    for(var i=0;i<document.querySelectorAll('input').length;i++){
+        if(document.querySelectorAll('input')[i]==document.activeElement){
             return;
         }
     }
