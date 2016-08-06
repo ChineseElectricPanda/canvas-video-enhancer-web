@@ -81,6 +81,16 @@
             position:fixed;
             bottom:0;
         }
+
+        #subtitle{
+            margin-top:-10px;
+            color:#777;
+        }
+        #video-count,
+        #course-count{
+            font-weight:bold;
+        }
+
     </style>
 </head>
 <body>
@@ -88,6 +98,9 @@
         <img src="img/icon.png">
         <div id="title">
             Lecture Recordings Archive
+        </div>
+        <div id="subtitle" style="display:none">
+            <span id="video-count"></span> lectures from <span id="course-count"></span> courses available
         </div>
     </div>
     <div id="search">

@@ -38,6 +38,12 @@ $.get('/api/v1/courses', function (data) {
     }
 });
 
+$.get('/api/v1/stats', function (data) {
+    $('#video-count').text(data.videos);
+    $('#course-count').text(data.courses);
+    $('#subtitle').fadeIn(300);
+})
+
 function searchFilter(text) {
     $('body').addClass('searching');
     for (var i = 0; i < courseList.length; i++) {
@@ -53,6 +59,6 @@ function selectCourse(i) {
     window.location = '/play?course=' + courseList[i].course + '&semester_code=' + courseList[i].semester_code;
 }
 
-$(document).ready(function(){
+$(document).ready(function () {
     $('#search-bar').focus();
 })
