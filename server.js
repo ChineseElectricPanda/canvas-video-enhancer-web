@@ -100,7 +100,7 @@ app.get('/api/v1/courses', function (req, res) {
 });
 
 app.get('/api/v1/playlist', function (req, res) {
-    if(!req.query.course || !req.query.semester_code){
+    if (!req.query.course || !req.query.semester_code) {
         res.status(400).send('course or semester_code not specified in parameters');
         return;
     }
@@ -108,7 +108,7 @@ app.get('/api/v1/playlist', function (req, res) {
         [req.query.course, req.query.semester_code],
         function (rows) {
             //404 if no videos returned
-            if(rows.length==0){
+            if (rows.length == 0) {
                 res.status(404).send('No videos found');
                 return;
             }
@@ -119,34 +119,44 @@ app.get('/api/v1/playlist', function (req, res) {
         });
 });
 
-app.get('/watch',function(req,res){
-    if(!req.query.video_id){
+app.get('/api/v1/stats', function (req, res) {
+    runQuery('SELECT COUNT(video_id) AS videos, COUNT(DISTINCT course) AS courses FROM video',[],
+        function (rows) {
+            res.setHeader('Content-Type', 'application/json');
+            res.status(200).send(rows[0]);
+        }, function (err) {
+            res.status(500).send(err);
+        });
+});
+
+app.get('/watch', function (req, res) {
+    if (!req.query.video_id) {
         req.status(400).send('Must specify video_id')
     }
     runQuery('SELECT course,semester_code FROM video WHERE video_id=?',
         [req.query.video_id],
-        function(rows){
+        function (rows) {
             //404 if video_id not found
-            if(rows.length==0){
+            if (rows.length == 0) {
                 res.status(404).send('Video not found');
             }
             //set redirect url
-            var redirect='http://'+req.headers['host']+'/play?course='+rows[0].course+'&semester_code='+rows[0].semester_code+'&video_id='+req.query.video_id;
+            var redirect = 'http://' + req.headers['host'] + '/play?course=' + rows[0].course + '&semester_code=' + rows[0].semester_code + '&video_id=' + req.query.video_id;
             //add timestamp if present
-            if(typeof req.query.h=='number'){
-                redirect+='&h='+req.query.h;
+            if (typeof req.query.h == 'number') {
+                redirect += '&h=' + req.query.h;
             }
-            if(typeof req.query.m=='number'){
-                redirect+='&m='+req.query.m;
+            if (typeof req.query.m == 'number') {
+                redirect += '&m=' + req.query.m;
             }
-            if(typeof req.query.s=='number'){
-                redirect+='&s='+req.query.s;
+            if (typeof req.query.s == 'number') {
+                redirect += '&s=' + req.query.s;
             }
-            res.statusCode=303;
-            res.setHeader('Location',redirect);
+            res.statusCode = 303;
+            res.setHeader('Location', redirect);
             res.send();
         },
-        function(err){
+        function (err) {
             res.status(500).send(err);
         })
 });
@@ -206,5 +216,4 @@ function runQuery(query, values, callback, errorCallback) {
     });
 }
 
-console.log(parseUrl('2016/1163/SOFTENG364L01C/351618/A201605101500.LT347936.REV1.preview'));
 app.listen(process.env.port || 3000);
