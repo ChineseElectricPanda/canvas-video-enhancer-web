@@ -31,15 +31,15 @@ function init() {
         $('#total-videos').text(playlist.length);
 
         if (getUrlParameter('video_id')) {
-            var videoFound=false;
+            var videoFound = false;
             for (var i = 0; i < data.length; i++) {
                 if (data[i].video_id == getUrlParameter('video_id')) {
                     selectVideo($('.playlist-item').eq(i));
-                    videoFound=true;
+                    videoFound = true;
                     break;
                 }
             }
-            if(!videoFound) {
+            if (!videoFound) {
                 selectVideo($('.playlist-item').eq(0));
             }
         } else {
@@ -62,18 +62,31 @@ function selectVideo(el) {
     document.querySelector('#title').innerText = title;
 
     //set the playlist progress number
-    for(var i=0;i<playlist.length;i++){
-        if(playlist[i].video_id==$(el).data('id')){
-            $('#current-video').text(i+1);
+    for (var i = 0; i < playlist.length; i++) {
+        if (playlist[i].video_id == $(el).data('id')) {
+            $('#current-video').text(i + 1);
             break;
         }
     }
 
+    var newUrl = window.location.pathname
+        + '?course=' + getUrlParameter('course')
+        + '&semester_code=' + getUrlParameter('semester_code')
+        + '&video_id=' + $(el).data('id');
+    if (getUrlParameter('h')) {
+        newUrl += '&h=' + getUrlParameter('h');
+    }
+    if (getUrlParameter('m')) {
+        newUrl += '&m=' + getUrlParameter('m');
+    }
+    if (getUrlParameter('s')) {
+        newUrl += '&s=' + getUrlParameter('s');
+    }
     //set the url parameters
     if (getUrlParameter('video_id')) {
-        window.history.pushState(null, '', window.location.pathname + '?course='+getUrlParameter('course') + '&semester_code=' + getUrlParameter('semester_code') + '&video_id=' + $(el).data('id'));
+        window.history.pushState(null, '', newUrl);
     } else {
-        window.history.replaceState(null, '', window.location.pathname + '?course='+getUrlParameter('course') + '&semester_code=' + getUrlParameter('semester_code') + '&video_id=' + $(el).data('id'));
+        window.history.replaceState(null, '', newUrl);
     }
 
     //Load default/saved values
@@ -83,8 +96,18 @@ function selectVideo(el) {
     setVolume(localStorage.getItem('canvasVideoEnhancerVolume') || 1);
     lastInputVolume = setVolume(localStorage.getItem('canvasVideoEnhancerVolume') || 1);
 
-    //Set time to start
-    document.querySelector('#video').currentTime = startTime;
+    //Check if custom start time defined
+    if (getUrlParameter('h') || getUrlParameter('m') || getUrlParameter('s')) {
+        //Calculate start time
+        var customStartTime = (getUrlParameter('h') * 3600)
+            + (getUrlParameter('m') * 60)
+            + (getUrlParameter('s') * 1);
+        console.log(customStartTime);
+        document.querySelector('#video').currentTime = customStartTime;
+    } else {
+        //Set time to start
+        document.querySelector('#video').currentTime = startTime;
+    }
     playVideo();
 
 }
@@ -173,6 +196,7 @@ function getUrlParameter(sParam) {
             return sParameterName[1] === undefined ? true : sParameterName[1];
         }
     }
+    return null;
 };
 
 function parseCourseNames(str) {
