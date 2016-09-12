@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="video.css">
     <link rel="stylesheet" href="playlist.css">
     <link rel="stylesheet" href="modal.css">
+    <link rel="stylesheet" href="cards.css">
 </head>
 <body>
 <table id="nav-bar">
@@ -276,8 +277,38 @@
             </div>
         </td>
     </tr>
-
 </table>
+
+<div id="card-container">
+    <div id="card-col-main">
+        <div id="card-description" class="card">
+            <h1>
+                TITLE
+            </h1>
+        </div>
+        <div id="card-comments" class="card">
+            HI
+        </div>
+    </div>
+    <div id="card-col-side">
+        <div id="card-sidebar" class="card">
+            <div id="download-button" class="unselectable">
+                <i class="fa fa-download"></i>&nbsp&nbspDownload
+            </div>
+            <select id="download-quality">
+                <option value="audio">Audio Only</option>
+                <option value="low">Low</option>
+                <option value="high">High</option>
+                <option value="full">Full Frame</option>
+            </select>
+            <input checked id="download-rename" type="checkbox">
+            <label id="download-rename-label" for="download-rename" class="unselectable">
+                Rename to CourseName-LectureDate
+            </label>
+
+        </div>
+    </div>
+</div>
 
 <div id="login-modal" class="modal">
     <div class="modal-content">
