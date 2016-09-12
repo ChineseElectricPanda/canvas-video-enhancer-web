@@ -120,7 +120,7 @@ app.get('/api/v1/playlist', function (req, res) {
 });
 
 app.get('/api/v1/stats', function (req, res) {
-    runQuery('SELECT COUNT(video_id) AS videos, COUNT(DISTINCT course) AS courses FROM video',[],
+    runQuery('SELECT COUNT(video_id) AS videos, COUNT(DISTINCT course) AS courses FROM video', [],
         function (rows) {
             res.setHeader('Content-Type', 'application/json');
             res.status(200).send(rows[0]);
@@ -130,11 +130,11 @@ app.get('/api/v1/stats', function (req, res) {
 });
 
 app.get('/watch', function (req, res) {
-    if (!req.query.video_id) {
-        req.status(400).send('Must specify video_id')
+    if (!(req.query.video_id || req.query.v)) {
+        res.status(400).send('Must specify video_id')
     }
     runQuery('SELECT course,semester_code FROM video WHERE video_id=?',
-        [req.query.video_id],
+        [req.query.video_id || req.query.v],
         function (rows) {
             //404 if video_id not found
             if (rows.length == 0) {
