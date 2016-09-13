@@ -1,3 +1,8 @@
+h1{
+    margin:0;
+    font-weight:normal;
+}
+
 #card-container {
     margin: auto;
     width: 1020px;
@@ -47,4 +52,33 @@
 
 #download-rename {
     vertical-align: middle;
+}
+
+#video-title{
+    font-size:24px;
+    border-bottom:1px solid #E2E2E2;
+    padding-bottom:10px;
+}
+
+#video-options{
+    padding-top:10px;
+}
+
+#video-options td{
+    padding:5px;
+    color: #808080;
+    font-size:13px;
+    cursor: pointer;
+}
+
+#video-options td i{
+    font-size:20px;
+    vertical-align: middle;
+    margin-right:5px;
+}
+
+
+.card-close-button{
+    margin:-2px;
+    float:right;
 }

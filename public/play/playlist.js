@@ -60,6 +60,7 @@ function selectVideo(el) {
     var title = info.courseName + ' ' + info.courseNumber + ' ' + info.year + '-' + info.month + '-' + info.day;
     document.title = title + ' - Lecture Recordings Archive';
     document.querySelector('#title').innerText = title;
+    document.querySelector('#video-title').innerText = title;
 
     //set the playlist progress number
     for (var i = 0; i < playlist.length; i++) {
