@@ -167,19 +167,32 @@ app.use('/', express.static(__dirname + '/public'));
 function parseUrl(url) {
     //url is in format <course_year>/<semester_code>/<infix>/<prefix><year><month><day><hour><minute>.<suffix>.preview
     //eg '2016/1163/SOFTENG364L01C/351618/201605101500.LT347936.preview'
+
     url = url.replace(/\.preview$/, '');
+    var originalUrl = url;
 
     url = url.split('/');
     var info = {};
     info.course_year = url[0];
     info.semester_code = url[1];
     info.course = url[2];
-    info.infix = url[3];
 
-    info.suffix = url[4].match(/\..+$/)[0].substring(1);
-    var dateTimeString = url[4].match(/\d+/)[0];
-    url[4] = url[4].replace(dateTimeString, '').replace('.' + info.suffix, '');
-    info.prefix = url[4];
+    info.suffix = url[url.length - 1].match(/\..+$/)[0].substring(1);
+    var dateTimeString = url[url.length - 1].match(/\d+/)[0];
+    url[url.length - 1] = url[url.length - 1].replace(dateTimeString, '').replace('.' + info.suffix, '');
+    info.prefix = url[url.length - 1];
+
+    info.infix =
+        originalUrl.replace(info.course_year + '/' + info.semester_code, '')
+            .replace(info.semester_code, '')
+            .replace(info.course, '')
+            .replace(info.suffix, '')
+            .replace(info.prefix, '')
+            .replace(dateTimeString, '')
+            //beginning /s
+            .replace(/^(\/)+/, '')
+            .replace(/\/(\.)+$/,'');
+
 
     info.year = dateTimeString.slice(0, 4);
     info.month = dateTimeString.slice(4, 6);
