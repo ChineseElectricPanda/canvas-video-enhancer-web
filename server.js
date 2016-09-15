@@ -186,13 +186,10 @@ function parseUrl(url) {
         originalUrl.replace(info.course_year + '/' + info.semester_code, '')
             .replace(info.semester_code, '')
             .replace(info.course, '')
-            .replace(info.suffix, '')
-            .replace(info.prefix, '')
-            .replace(dateTimeString, '')
-            //beginning /s
+            .replace(info.prefix + dateTimeString + '.' + info.suffix, '')
+            //leading /s
             .replace(/^(\/)+/, '')
-            .replace(/\/(\.)+$/,'');
-
+            .replace(/\/(\.)*$/, '');
 
     info.year = dateTimeString.slice(0, 4);
     info.month = dateTimeString.slice(4, 6);
