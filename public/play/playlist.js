@@ -110,7 +110,22 @@ function selectVideo(el) {
         document.querySelector('#video').currentTime = startTime;
     }
     playVideo();
+}
 
+function downloadVideo() {
+    var quality = document.querySelector('#download-quality').value;
+    var renameFile = document.querySelector('#download-rename').checked;
+
+    var link = document.createElement('a');
+
+    if (renameFile) {
+        console.log(info);
+        link.download = info.courseName + info.courseNumber + '-' + info.year + '-' + info.month + '-' + info.day + suffixes[quality];
+    }
+    console.log(link.download);
+
+    link.href = urlRoot + suffixes[quality];
+    link.click();
 }
 //send HEAD to mediastore to check current login status
 //404 means logged in

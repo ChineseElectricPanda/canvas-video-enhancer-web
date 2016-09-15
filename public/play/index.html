@@ -299,13 +299,13 @@
     </div>
     <div id="card-col-side">
         <div id="card-sidebar" class="card">
-            <div id="download-button" class="unselectable">
+            <div id="download-button" class="unselectable" onclick="downloadVideo()">
                 <i class="fa fa-download"></i>&nbsp&nbspDownload
             </div>
             <select id="download-quality">
                 <option value="audio">Audio Only</option>
                 <option value="low">Low</option>
-                <option value="high">High</option>
+                <option value="high" selected="selected">High</option>
                 <option value="full">Full Frame</option>
             </select>
             <input checked id="download-rename" type="checkbox">

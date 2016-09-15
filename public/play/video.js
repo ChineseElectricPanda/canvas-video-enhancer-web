@@ -198,6 +198,11 @@ function setQuality(q) {
     }
     //set the tick in the quality select menu
     document.querySelector('#quality-' + q).className = 'selected';
+
+    //if in a playlist page, also set the selector for download quality
+    if(document.querySelector('#download-quality')){
+        document.querySelector('#download-quality').value=q;
+    }
 }
 
 function setVolume(vol) {
