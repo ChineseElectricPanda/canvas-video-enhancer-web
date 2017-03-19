@@ -13,9 +13,9 @@ app.use(cors());
 //MySQL Connection Pool
 var connectionPool = mysql.createPool({
     connectionLimit: 2,
-    host: 'au-cdbr-azure-east-a.cloudapp.net',
-    user: 'b9ee21e7c18903',
-    password: '240f4fda',
+    host: process.env.DATABASE_HOSTNAME,
+    user: process.env.DATABASE_USERNAME,
+    password: process.env.DATABASE_PASSWORD,
     database: 'canvasvideoenhancer',
     debug: false
 });
