@@ -108,7 +108,7 @@ app.get('/api/v1/playlist', function (req, res) {
        res.status(400).send('course or semester_code not specified in parameters');
        return;
    }
-   runQuery('SELECT * FROM video WHERE course=? AND semester_code=? ORDER BY year ASC, month ASC, day ASC, hour ASC, minute ASC',
+   runQuery('SELECT * FROM video WHERE course=? AND semester_code=?',
        [req.query.course, req.query.semester_code],
        function (rows) {
            //404 if no videos returned
