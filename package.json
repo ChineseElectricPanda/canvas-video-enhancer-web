@@ -1,9 +1,11 @@
 {
-  "name":"canvas-video-enhancer-web",
-  "dependencies":{
-    "express":"*",
-    "body-parser":"*",
-    "cors":"*",
-    "mysql":"*"
+  "name": "canvas-video-enhancer-web",
+  "dependencies": {
+    "body-parser": "*",
+    "cors": "*",
+    "express": "*",
+    "mysql": "*",
+    "sequelize": "^4.34.0",
+    "tedious": "^2.3.1"
   }
 }
